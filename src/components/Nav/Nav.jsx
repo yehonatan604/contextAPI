@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import UserContext from '../../store/user-context';
 
 const Nav = () => {
     const [navList, setNavList] = useState();
     const nav = useNavigate();
+
+    const ctx = useContext(UserContext);
 
     const navHome = () => {
         nav('/');
@@ -38,8 +41,10 @@ const Nav = () => {
     );
 
     useEffect(() => {
-        setNavList(guestNav);
-    }, []);
+        ctx?.isLoggedIn ?
+            setNavList(userNav) :
+            setNavList(guestNav);
+    }, [ctx.isLoggedIn]);
 
     return navList;
 }
